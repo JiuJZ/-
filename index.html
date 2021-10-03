@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>就是想酱紫</title>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<style>
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+    
+    body{
+        background-color: #333333;
+    }
+    #Background{
+        height: 100%;
+        width: 100%;
+        background-color: #333333;
+        /*background-image: radial-gradient(rgba(122,122,122,0.1), rgba(12,12,12,0.5), rgba(0,0,0,1));*/
+        position: fixed;
+        z-index: -1;
+    }
+    
+    
+    #Engine_Frame{
+        height: 0px;
+        width: 0px;
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translate(-50%,0%);
+    }
+    .Engine_Main_Icon{
+        height: 40px;
+        width: 40px;
+        border: solid #ffffff 2px;
+        /*border-color: #ffffff #523341 #823033 #215452;*/
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translate(-50%,0%);
+        border-radius: 50%;
+        transition: all 0.8s;
+    }
+    .Engine_Main_Icon:hover{
+        /*animation: .8s Engine_Main_Icon linear .2s;*/
+    }
+    
+    
+    
+    @keyframes Engine_Main_Icon {
+     0% {}
+     50% {
+        transform: scale(1) rotate(180deg) translate(50%,0%);
+        border-top-left-radius: 45%;
+        border-bottom-right-radius: 45%;}
+    100% {}
+    }
+    
+    
+    .Engine_Frame_To_Be_Selected{
+        height: 40px;
+        width: 40px;
+        /*border: solid #ffffff 1px;*/
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translate(-50%,0%);
+        border-radius: 50%;
+        z-index: -1;
+        transition: all 0.8s;
+       
+    }
+    .Engine_Constraints_To_Be_Selected{
+        height: 0px;
+        width: 0px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        /*border: solid #ffffff 1px;*/
+        transform: translate(-50%,0%) rotate(0deg);
+        transform-origin:50% 0%;
+        transition: all 0.8s;
+        z-index: -1;
+        
+      
+    }
+    .Engine_Icon_To_Be_Selected{
+        border: 0px;
+        padding: 3px;
+        height: 30px;
+        width: 30px;
+        position: absolute;
+        top:100%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        border-radius: 50%;
+        color: rgba(255,255,255,0.7);
+        transition: all 0.8s cubic-bezier(0.95, -0.78, 0.17, 1.57);
+        background-color: #ffffff;
+        /*background:url('img/Bing.png') center center / cover no-repeat;*/
+        z-index: -1;
+        /*组合起来是融合效果*/
+        /*filter: blur(5px);*/
+        /* filter: contrast(10);*/
+    }
+    
+     img[src=""],img:not([src]){
+     opacity: 0;
+     border:none;
+     visibility: hidden;
+     max-width: none;
+     }
+    
+</style>
+
+</head>
+<body>
+
+    <div id="Background"></div>
+    
+    <div id="Engine_Frame">
+        
+        <div class="Engine_Main_Icon"></div>
+        
+        <div class="Engine_Frame_To_Be_Selected">
+            <!--这里面装引擎-->
+        </div>
+        
+    </div>
+
+</body>
+</html>
+
+<script>
+
+//点击主ICO后展开引擎
+$(".Engine_Main_Icon").click(function(){
+    
+    // setTimeout(function(){
+        Expand_Engine();
+    //  },200);
+    
+    
+    //延迟后抖动主图标
+    Jitter_After_Delay_Main_Icon(0);
+});
+
+    // 运行函数
+    Load_Engine();
+    // 载入引擎
+    function Load_Engine(){
+        
+        //图片地址
+        var value = ["img/ (1).png","img/ (2).png","img/ (3).png","img/ (4).png","img/ (5).png","img/ (6).png","img/ (7).png","img/ (8).png"
+            ,"img/ (9).png","img/ (10).png","img/ (11).png","img/ (12).png","img/ (13).png","img/ (14).png"
+        
+        ];
+        // alert(value);
+        
+        for(var i=0;i<14;i++){
+            
+            var obj = $(".Engine_Frame_To_Be_Selected").append(
+                
+                "<div class='Engine_Constraints_To_Be_Selected'>"+
+                "<img class='Engine_Icon_To_Be_Selected'>"+
+                "</div>"
+                
+                );
+            //给每一个引擎分配图片地址
+            $(".Engine_Icon_To_Be_Selected:eq("+i+")").attr("src",value[i]);
+            
+        }
+        
+    }
+    
+    $(".Engine_Icon_To_Be_Selected").click(function(){
+        // $(".Engine_Main_Icon").click();
+        Change_Parent_Element_Style($(this));
+    // alert(1);
+    });
+    
+// 展开引擎
+function Expand_Engine(){
+
+            //初始角度
+        var angle = -90;
+        var angle2 = -90;
+        
+        // 一环高度
+        var First_Ring_Height = 90;
+        // 二环高度
+        
+        var Secondary_Ring_Height = 150;
+        // 一环个数
+        var Number_Of_A_Ring = 5;
+        // 二环个数
+        var Number_Of_Two_Ring = 10;
+        
+        var index = $(".Engine_Constraints_To_Be_Selected").length;
+        
+        var Angle_Self_Increasing = 180;
+        
+        var Angle_Self_Increasing2 = 180;
+        
+        index>Number_Of_A_Ring?Angle_Self_Increasing=180/Number_Of_A_Ring:Angle_Self_Increasing=180/(index-1);
+        
+        Angle_Self_Increasing2=180/(index-2-Number_Of_A_Ring);
+        
+        for(var i=0;i<index;i++){
+            // 控制前6个引擎的样式
+            if(i<=Number_Of_A_Ring){
+              $(".Engine_Constraints_To_Be_Selected:eq("+i+")").css({
+                "transform": "translate(-50%,0%) rotate("+angle+"deg)",
+                    "height":First_Ring_Height
+                }); 
+                
+                $(".Engine_Icon_To_Be_Selected:eq("+i+")").css({
+                    "transform": "translate(-50%,-50%) rotate("+(-angle)+"deg)"
+                }); 
+                
+                angle+=Angle_Self_Increasing;
+            }
+            
+            
+            // 控制6个引擎之后的样式
+            if(i>Number_Of_A_Ring&&i<Number_Of_Two_Ring+Number_Of_A_Ring){
+              $(".Engine_Constraints_To_Be_Selected:eq("+i+")").css({
+                    "transform": "translate(-50%,0%) rotate("+angle2+"deg)",
+                    "height":Secondary_Ring_Height
+                }); 
+                
+                $(".Engine_Icon_To_Be_Selected:eq("+i+")").css({
+                    "transform": "translate(-50%,-50%) rotate("+(-angle2)+"deg)"
+                }); 
+                
+                angle2+=Angle_Self_Increasing2;
+            }
+
+            
+        }
+        // 引擎原本的高度
+        $(".Engine_Icon_To_Be_Selected").css({
+         height:30,
+         width:30
+        });
+        
+
+
+}
+// 更改选中的元素和父元素样式
+function Change_Parent_Element_Style(obj){
+    //所选元素
+    var t=obj.get(0);
+    //所选元素的父元素
+    var p=obj.parent().get(0);
+    //获取角度
+    var angle = getTranslate(p,"rotate");
+    //如果所选元素的父元素的角度大于180则要变换的角度等于360减去角度值，最后变成负数
+    if(angle>180){angle=-(360-angle);}
+
+    // 改变所有引擎父元素的高度为当前点击元素的父元素的高度
+     $(".Engine_Constraints_To_Be_Selected").css({
+         
+         height:$(obj).parent().height(),
+        //  "transform":"translate(-50%,0%) rotate("+angle+"deg)"
+    });
+ 
+    // 当前点击元素的父元素层级变高
+     $(obj).parent().css({
+         height:0,
+         "z-index": 1
+     });
+    //  除了当前选中元素的父元素以外的层级变低
+     $(".Engine_Constraints_To_Be_Selected").not($(obj).parent()).css({
+         "z-index":-1
+     });
+    //  当前的元素高宽变化
+     $(obj).css({
+         height:40,
+         width:40
+     });
+
+    // 延迟后收回引擎角度
+    Recovery_Engine_Angle_After_Delay(0,angle);
+     // 延迟后收回引擎
+    Delay_Recovery_Of_All_Engines(150);
+
+}
+// 延迟后收回引擎
+function Delay_Recovery_Of_All_Engines(time){
+    
+     setTimeout(function(){
+        $(".Engine_Constraints_To_Be_Selected").css({
+            height:0
+        });
+     },time);
+     
+     //延迟后抖动主图标
+    Jitter_After_Delay_Main_Icon(100);
+}
+
+// 延迟后收回引擎角度
+function Recovery_Engine_Angle_After_Delay(time,angle){
+    //控制前6个引擎的样式
+     setTimeout(function(){
+        //  所有引擎角度变化为和当前选中元素的都元素角度一致
+         $(".Engine_Constraints_To_Be_Selected:lt(6)").css({
+             "transform":"translate(-50%,0%) rotate("+angle+"deg)"
+        });
+     },time,angle);
+     
+     //控制6个引擎后的样式
+     setTimeout(function(){
+        //  所有引擎角度变化为和当前选中元素的都元素角度一致
+         $(".Engine_Constraints_To_Be_Selected:gt(5)").css({
+             "transform":"translate(-50%,0%) rotate("+angle+"deg)"
+        });
+     },time+50,angle);
+}
+
+// 延迟后抖动主图标
+function Jitter_After_Delay_Main_Icon(time){
+    
+     setTimeout(function(){
+        $(".Engine_Main_Icon").css({
+            animation:" .8s Engine_Main_Icon linear .2s"
+        });
+     },time);
+     
+     setTimeout(function(){
+        $(".Engine_Main_Icon").attr("style","");
+     },time+800);
+}
+
+// 检测事件---------------------------------------------------
+
+$(document).click(function(e){
+    var this_class = $(e.target).attr("class"); 
+   if(this_class!='Engine_Main_Icon'){
+    //   Delay_Recovery_Of_All_Engines(150);
+   }
+});
+
+
+//当鼠标移入主图标后
+$(".Engine_Main_Icon").mouseover(function(){
+    Jitter_After_Delay_Main_Icon(0);
+});
+//当鼠标移开主图标后
+$(".Engine_Main_Icon").mouseout(function(){
+    Jitter_After_Delay_Main_Icon(0);
+});
+
+
+
+//获取传入的元素角度
+function getTranslate(node,sty){//获取transform值
+    var translates=document.defaultView.getComputedStyle(node,null).transform.substring(7);
+    var result = translates.match(/\(([^)]*)\)/);// 正则()内容
+    var matrix=result?result[1].split(','):translates.split(',');
+    if(sty=="x" || sty==undefined){
+        return matrix.length>6?parseFloat(matrix[12]):parseFloat(matrix[4]);
+    }else if(sty=="y"){
+        return matrix.length>6?parseFloat(matrix[13]):parseFloat(matrix[5]);
+    }else if(sty=="z"){
+        return matrix.length>6?parseFloat(matrix[14]):0;
+    }else if(sty=="rotate"){
+        return matrix.length>6?getRotate([parseFloat(matrix[0]),parseFloat(matrix[1]),parseFloat(matrix[4]),parseFloat(matrix[5])]):getRotate(matrix);
+    }
+}
+function getRotate(matrix){
+    var aa=Math.round(180*Math.asin(matrix[0])/ Math.PI);
+    var bb=Math.round(180*Math.acos(matrix[1])/ Math.PI);
+    var cc=Math.round(180*Math.asin(matrix[2])/ Math.PI);
+    var dd=Math.round(180*Math.acos(matrix[3])/ Math.PI);
+    var deg=0;
+    if(aa==bb||-aa==bb){
+        deg=dd;
+    }else if(-aa+bb==180){
+        deg=180+cc;
+    }else if(aa+bb==180){
+        deg=360-cc||360-dd;
+    }
+    return deg>=360?0:deg;
+ 
+}
+
+</script>
