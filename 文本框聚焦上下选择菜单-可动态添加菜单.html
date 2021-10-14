@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>一见三年</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style type="text/css">
+		#input1{
+			text-align: center;
+			height: 25px;
+			width: 200px;
+		}
+		#Frame{
+			border: solid 1px;
+			width: 200px;
+			margin-top: 5px;
+		}
+		
+    </style>
+</head>
+<body>
+	<div id="T"></div>
+	<input type="text" id="input1" value="" />
+	<div id="Frame">
+		<div>一</div>
+		<div>见</div>
+		<div>三</div>
+		<div>年</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	//给搜索框添加键盘按下事件
+	$("#input1").keydown(function(event){
+		
+		
+		if(event.keyCode==40||event.keyCode==38){
+			$("#input1").each(function(){
+				// 取消默认事件
+				event.preventDefault();
+			});
+			
+			MyFun(event.keyCode);
+
+		}
+		
+	});
+	var All_Inedx = -1;
+	function MyFun(value){
+		//获取元素的个数
+		var Max_Index = $("#Frame div").length; 
+		
+		if(value==40){
+			All_Inedx +=1;
+		}
+		if(value==38){
+			All_Inedx -=1;
+		}
+		
+		if(All_Inedx > Max_Index - 1){
+			All_Inedx = 0;
+		}
+		
+		if(All_Inedx < 0){
+			All_Inedx = Max_Index - 1;
+		}
+		
+		$("#T").html(event.keyCode);
+		
+		$("#Frame div:eq("+All_Inedx+")").css({
+			backgroundColor:"rgba(0,0,0,0.3)"
+		});
+		
+		$("#Frame div").not("#Frame div:eq("+All_Inedx+")").css({
+			backgroundColor:"rgba(0,0,0,0)"
+		});
+		
+		$("#input1").val($("#Frame div:eq("+All_Inedx+")").text());
+	}
+	
+</script>
